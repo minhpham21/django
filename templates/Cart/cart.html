@@ -1,0 +1,148 @@
+{% extends 'Cart/base.html'%}
+{% load static %}
+{% load mathfilters %}
+
+{% block cssblock %}
+
+	<!--
+            CSS
+			============================================= -->
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+			<link rel="stylesheet" href="{% static 'Home/css/linearicons.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/font-awesome.min.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/themify-icons.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/bootstrap.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/owl.carousel.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/nice-select.cs' %}s">
+			<link rel="stylesheet" href="{% static 'Home/css/nouislider.min.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/ion.rangeSlider.css' %}" />
+			<link rel="stylesheet" href="{% static 'Home/css/ion.rangeSlider.skinFlat.css' %}" />
+			<link rel="stylesheet" href="{% static 'Home/css/magnific-popup.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/main.css' %}">
+			
+{% endblock %}
+
+    
+
+{% block content %}
+    <!--================Cart Area =================-->
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col"></th>
+                                <th scope="col">Giá tiền</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tổng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, value in request.session.cart.items %}
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="col-lg-4 col-md-6">
+
+                                                <div class="single-product">
+                                                    <div class="d-flex">
+                                                   
+                                                       <a> <img class="img-fluid" src="static/Home/img/Bitit/Img_home/{{value.code}}.png" alt=""></a>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            
+                                           
+                                            <div class="media-body">
+                                               <h5>{{value.name}}</h5> 
+                                            </div>
+                                           
+                                           
+                                        </div>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <h5>{{value.price}}vnd</h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            
+                                            <input type="button" name="qty" id="sst" value={{value.num}} title="Quantity:"
+                                                class="input-text qty">
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>{{value.price|mul:value.num}}vnd</h5>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+
+
+                          
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <h5>Tổng hóa đơn:</h5>
+                                </td>
+                                <td>
+                                    <h5>{{total}}vnd</h5>
+                                </td>
+                            </tr>
+                            
+                            <tr class="out_button_area">
+                                <td></td>
+                                
+                                
+                                <td>
+                                    
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="category">Tiếp tục mua sắm</a>
+                                        <a class="primary-btn" href="order">Thanh toán</a>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+
+    {% endblock %}
+    {% block jsblock %}
+    <script src="{% static 'Home/js/vendor/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'Home/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js ' %}" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+ crossorigin="anonymous"></script>
+    <script src="{% static 'Home/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'Home/js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'Home/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'Home/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'Home/js/nouislider.min.js' %}"></script>
+    <script src="{% static 'Home/js/countdown.js' %}"></script>
+    <script src="{% static 'Home/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'Home/js/owl.carousel.min.js' %}"></script>
+    <!--gmaps Js-->
+    <script src="{% static 'Home/https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE ' %}"></script>
+    <script src="{% static 'Home/js/gmaps.min.js' %}"></script>
+    <script src="{% static 'Home/js/main.js' %}"></script>
+    <script src="js/main.js"></script>
+    
+    {% endblock %}

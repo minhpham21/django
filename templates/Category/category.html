@@ -1,0 +1,372 @@
+{% extends 'Category/base.html'%}
+{% load static %}
+
+{% block cssblock %}
+
+	<!--
+            CSS
+			============================================= -->
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+			<link rel="stylesheet" href="{% static 'Home/css/linearicons.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/font-awesome.min.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/themify-icons.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/bootstrap.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/owl.carousel.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/nice-select.cs' %}s">
+			<link rel="stylesheet" href="{% static 'Home/css/nouislider.min.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/ion.rangeSlider.css' %}" />
+			<link rel="stylesheet" href="{% static 'Home/css/ion.rangeSlider.skinFlat.css' %}" />
+			<link rel="stylesheet" href="{% static 'Home/css/magnific-popup.css' %}">
+			<link rel="stylesheet" href="{% static 'Home/css/main.css' %}">
+			
+{% endblock %}
+
+
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-categories">
+					<div class="head">Dang mục sản phẩm</div>
+					<ul class="main-categories">
+
+						{% if filters_product %}
+							{% for i in filters_product %}
+
+								<li class="main-nav-list">
+
+									<a data-toggle="collapse" href="#{{i.title}}" aria-expanded="false" aria-controls="{{i.title}}">
+										<span class="lnr lnr-arrow-right"></span>{{i.title}}</a>
+									</a>
+
+									{% if list_category %}
+										{% for j in list_category %}
+											{% if i.id == j.product_filters_id  %}
+												<ul class="collapse" id="{{i.title}}" data-toggle="collapse" aria-expanded="false" aria-controls="{{i.title}}">
+													<li class="main-nav-list child"><a href="productcat{{j.id}}"> {{j.title}}</a></li>
+												</ul>
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+
+								</li>
+
+							{% endfor %}
+						{% endif %}
+						
+					</ul>
+				</div>
+
+				<div class="sidebar-filter mt-50">
+					<div class="top-filter-head">Bộ lọc</div>
+						<div class="common-filter">
+							<div class="head">Nhãn Hiệu</div>
+							<form action="#">
+							{% if list_brands %}
+								{% for lb in list_brands %}
+									
+										<ul>
+											<li class="filter-list"><input class="pixel-radio" type="radio" id="{{lb.title}}" name="brand"><label for="{{lb.title}}">{{lb.title}}</label></li>
+										</ul>
+									
+								{% endfor %}
+							{% endif %}
+							</form>		
+						</div>
+						<div class="common-filter">
+							<div class="head">Giá</div>
+							<div class="price-range-area">
+								<div id="price-range"></div>
+								<div class="value-wrapper d-flex">
+									<div class="price">Giá:</div>
+
+									<div id="lower-value"></div>
+									<span>vnd</span>
+
+									<div class="to"> -- </div>
+									
+									<div id="upper-value"></div>
+									<span>vnd</span>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+
+			<div class="col-xl-9 col-lg-8 col-md-7">
+				<!-- Start Filter Bar -->
+
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<div class="sorting">
+						<select>
+							<option value="1">Mặc định</option>
+							<option value="1">Giảm dần</option>
+							<option value="1">Tăng dần</option>
+						</select>
+					</div>
+
+					<div class="sorting mr-auto">
+					</div>
+
+					
+					<div class="pagination">
+						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+						<a href="#" class="active">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+						<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+						<a href="#">6</a>
+						<a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+					</div>
+
+				</div>
+				<!-- End Filter Bar -->
+
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+						{% for post in title_product %}
+									<div class="col-lg-4 col-md-6">
+										<div class="single-product">
+											<a href="product{{post.id}}"><img class="img-fluid" src="static/Home/img/Bitit/Img_home/{{post.code_product}}.png" alt=""></a>
+											<div class="product-details">
+												<a color ="00FF00" href="product{{post.id}}"><font color="Black">{{post.title}}</font></a>
+												<div class="price">
+												
+														{% for v in variation%}
+															{% if v.product_id == post.id and v.price_sale != 0  %}
+																<h6>{{v.price_sale}}</h6>
+																<h6 class="l-through">{{v.price}}</h6>			
+															{% endif %}
+														{% endfor%}
+
+														{% for v in variation%}
+															{% if v.product_id == post.id and v.price_sale == 0  %}
+																<h6>{{v.price}}</h6>
+																	
+															{% endif %}
+														{% endfor%}		
+												</div>
+												<div class="prd-bottom">
+													<a  href="#" class="social-info" onclick="addcart({{post.id}})"  >
+														<span class="ti-bag"></span>
+														<p class="hover-text">add to bag</p>
+													</a>
+													<a href="" class="social-info">
+														<span class="lnr lnr-heart"></span>
+														<p class="hover-text">Wishlist</p>
+													</a>
+													<a href="" class="social-info">
+														<span class="lnr lnr-sync"></span>
+														<p class="hover-text">compare</p>
+													</a>
+													<a href="" class="social-info">
+														<span class="lnr lnr-move"></span>
+														<p class="hover-text">view more</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+						{% endfor %} 
+					</div>
+				</section>
+				<!-- End Best Seller -->
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<div class="sorting mr-auto">
+					</div>
+					<div class="pagination">
+						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+						<a href="#" class="active">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+						<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+						<a href="#">6</a>
+						<a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+					</div>
+				</div>
+				<!-- End Filter Bar -->
+			</div>
+			
+		</div>
+	</div>
+
+
+	<!-- Start related-product Area -->
+	<section class="related-product-area section_gap">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 text-center">
+					<div class="section-title">
+						<h1>Deals of the Week</h1>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r1.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r2.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r3.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r5.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r6.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r7.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r9.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r10.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r11.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>$189.00</h6>
+										<h6 class="l-through">$210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="ctg-right">
+						<a href="#" target="_blank">
+							<img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End related-product Area -->
+
+	
+
+
+
+{% endblock %}
+
+{% block jsblock %}
+	<script src="{% static 'Home/js/vendor/jquery-2.2.4.min.js' %}"></script>
+		<script src="{% static 'Home/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js ' %}" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+		<script src="{% static 'Home/js/vendor/bootstrap.min.js' %}"></script>
+		<script src="{% static 'Home/js/jquery.ajaxchimp.min.js' %}"></script>
+		<script src="{% static 'Home/js/jquery.nice-select.min.js' %}"></script>
+		<script src="{% static 'Home/js/jquery.sticky.js' %}"></script>
+		<script src="{% static 'Home/js/nouislider.min.js' %}"></script>
+		<script src="{% static 'Home/js/countdown.js' %}"></script>
+		<script src="{% static 'Home/js/jquery.magnific-popup.min.js' %}"></script>
+		<script src="{% static 'Home/js/owl.carousel.min.js' %}"></script>
+		<!--gmaps Js-->
+		<script src="{% static 'Home/https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE ' %}"></script>
+		<script src="{% static 'Home/js/gmaps.min.js' %}"></script>
+		<script src="{% static 'Home/js/main.js' %}"></script>
+		<script>
+			$ (document).ready(function(){
+				
+			});
+			function addcart(id){
+				num = $("#sst").val();
+				if (!num){
+					num = 1;
+				}
+				$.post('Cart/addcart', {'id': id, 'num': num, 'csrfmiddlewaretoken': '{{csrf_token}}'}, function(data) {
+					
+				})
+				
+			}
+		</script>
+{% endblock %}
